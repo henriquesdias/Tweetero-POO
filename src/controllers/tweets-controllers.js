@@ -1,4 +1,5 @@
-import { usuarios, tweets, Tweet } from "../data/index.js";
+import { usuarios, tweets, Tweet } from "../data/data.js";
+import { status } from "../utils.js";
 
 function reverseTweets() {
   return [...tweets].reverse();
@@ -8,14 +9,16 @@ export function createTweet(req, res) {
   const { tweet, username } = req.body;
 
   if (!username || !tweet) {
-    return res.status(400).send("Todos os campos são obrigatórios!");
+    return res
+      .status(status.BAD_REQUEST)
+      .send("Todos os campos são obrigatórios!");
   }
 
   const { avatar } = usuarios.find((user) => user.username === username);
 
   tweets.push(new Tweet(tweet, username, avatar));
 
-  res.status(201).send("OK, seu tweet foi criado");
+  res.status(status.CREATED).send("OK, seu tweet foi criado");
 }
 
 export function getTweetsOfUser(req, res) {
@@ -23,14 +26,14 @@ export function getTweetsOfUser(req, res) {
 
   const tweetsDoUsuario = tweets.filter((t) => t.username === username);
 
-  res.status(200).send(tweetsDoUsuario);
+  res.status(status.OK).send(tweetsDoUsuario);
 }
 
 export function getTweets(req, res) {
   const { page } = req.query;
 
   if (page && page < 1) {
-    res.status(400).send("Informe uma página válida!");
+    res.status(status.BAD_REQUEST).send("Informe uma página válida!");
     return;
   }
   const limite = 10;
@@ -41,5 +44,5 @@ export function getTweets(req, res) {
     return res.send(reverseTweets());
   }
 
-  res.status(200).send([...tweets].reverse().slice(start, end));
+  res.status(status.OK).send([...tweets].reverse().slice(start, end));
 }

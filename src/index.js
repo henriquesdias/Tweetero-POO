@@ -2,8 +2,8 @@ import chalk from "chalk";
 import cors from "cors";
 import express, { json } from "express";
 
-import usersRouter from "./src/routers/users-routers.js";
-import tweetsRouter from "./src/routers/tweets-routers.js";
+import usersRouter from "./routers/users-routers.js";
+import tweetsRouter from "./routers/tweets-routers.js";
 
 const app = express();
 
